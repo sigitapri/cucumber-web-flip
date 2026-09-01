@@ -1,5 +1,6 @@
 package pages.signUp;
 
+import io.cucumber.java.ja.然し;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -19,10 +20,20 @@ public class SignUpPage extends BasePage {
     @FindBy(xpath = "//input[@name=\"phone_number\"]")
     private WebElement fieldNomorHP;
 
-//    @FindBy(xpath = "//input[@value=\"2\"]")
     @FindBy(xpath = "//span[@data-testid=\"qa-radio-button-label-text\" and text()='Perseorangan']")
     private WebElement radioBusinessType_1;
 
+    @FindBy(xpath = "//span[@data-testid=\"qa-radio-button-label-text\" and text()='Badan Usaha']")
+    private WebElement radioBusinessType_2;
+
+    @FindBy(xpath = "//span[@data-testid='qa-radio-button-label-text' and @disabled and text()='Perseorangan']")
+    private WebElement radioBusinessType_1Disable;
+
+    @FindBy(xpath = "//span[@data-testid='qa-radio-button-label-text' and @disabled and text()='Badan Usaha']")
+    private WebElement radioBusinessType_2Disable;
+
+    @FindBy(xpath = "//input[@name=\"company_id\"]")
+    private WebElement fieldBusinessID;
 
     @FindBy(xpath = "//input[@name=\"password\"]")
     private WebElement fieldKtSandi;
@@ -44,6 +55,12 @@ public class SignUpPage extends BasePage {
 
     @FindBy(xpath = "//div[@data-testid=\"qa-alert\"]")
     private WebElement alertError;
+
+    @FindBy(xpath = "//div[@data-qaid=\"qa-password-error\"]")
+    private WebElement messagePasswordLessThan8Char;
+
+    @FindBy(xpath = "//div[@data-qaid=\"qa-ffb-id-error\"]")
+    private WebElement messageIDMoreThan15Char;
 
     public SignUpPage(WebDriver driver) {
         super(driver);
@@ -74,6 +91,21 @@ public class SignUpPage extends BasePage {
         click(radioBusinessType_1);
     }
 
+    public void radioBusinessTypeDisable(){
+        waitForElementVisible(radioBusinessType_1Disable);
+        waitForElementVisible(radioBusinessType_2Disable);
+    }
+
+    public void selectBusinessType_2(){
+        waitForElementVisible(radioBusinessType_2);
+        click(radioBusinessType_2);
+    }
+
+    public void inputBusines_ID(String text){
+        waitForElementVisible(fieldBusinessID);
+        fieldBusinessID.sendKeys(text);
+    }
+
     public void inputKtSandi(String text){
         waitForElementVisible(fieldKtSandi);
         fieldKtSandi.sendKeys(text);
@@ -86,6 +118,7 @@ public class SignUpPage extends BasePage {
 
     public void inputBisnisID(String text){
         waitForElementVisible(fieldBisnisID);
+        fieldBusinessID.clear();
         fieldBisnisID.sendKeys(text);
     }
     
@@ -99,8 +132,18 @@ public class SignUpPage extends BasePage {
         return userEmail.getText();
     }
 
-    public void verifyAlertErrorShown(){
+    public String verifyAlertErrorShown(){
         waitForElementVisible(alertError);
+        return alertError.getText();
+    }
+
+    public void verifyMessagePasswordLessThan8Char(){
+        waitForElementVisible(messagePasswordLessThan8Char);
+    }
+
+    public String verifyMessageIDMoreThan15Char(){
+        waitForElementVisible(messageIDMoreThan15Char);
+        return messageIDMoreThan15Char.getText();
     }
 
 }
